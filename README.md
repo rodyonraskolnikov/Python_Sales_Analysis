@@ -1,29 +1,29 @@
 # Overview
 
-Welcome to my analysis of the data job market, specifically focused on data analyst roles. This project stems from a desire to better understand and navigate the job market. It explores the highest-paying and most in-demand skills to identify optimal opportunities for data analysts.  
-
-The dataset, sourced from [Luke Barousse's Python Course](https://lukebarousse.com/python), provides a solid foundation for this analysis, offering detailed insights into job titles, salaries, locations, and key skills. Using Python, I address critical questions such as which skills are most in demand, salary trends, and how demand correlates with salaries in the field of data analytics.  
+In this project, I analyzed a year's worth of sales data by merging monthly sales reports into a comprehensive dataset. My analysis involved rigorous data cleaning—including handling missing values and incorrect entries—and ensuring the accuracy of data types. After cleaning and preparing the data, I investigated key business questions such as identifying the best month for sales, determining which city generated the most sales, analyzing optimal advertisement timing, understanding product bundling patterns, and highlighting the most popular products. This provided valuable insights to inform business decisions on marketing, product strategy, and sales optimization.
+ 
+The dataset and the foundational concepts for this analysis were provided by [Keith Galli](https://www.youtube.com/watch?v=eMOA1pPVUc4&t=2s&ab_channel=KeithGalli) as part of his comprehensive data analytics tutorials, making this project both educational and practical.
 
 # The Questions
 
 Here are the key questions I aim to answer in this project:
 
-1. Which skills are most in demand for the top three most popular data roles?  
-2. What are the trends for in-demand skills among Data Analysts?  
-3. How do job roles and skills translate to pay for Data Analysts?  
-4. What are the best skills for Data Analysts to learn? (High Demand and High Paying)  
+1. What was the best month for sales? How much was earned that month?
+2. What city had the highest number of sales? 
+3. What time should we display advertisements to maximize likelihood of customers buying products?  
+4. What products are most often sold together?
+5. What product sold the most? Why do you think it sold the most?  
 
 # Tools I Used
 
-For my in-depth exploration of the data analyst job market, I utilized several essential tools:  
+While cleaning up the data and answering the questions above, I utilized several essential tools:  
 
-- **Python:** The core of my analysis, enabling me to extract valuable insights from the data. I also leveraged the following Python libraries:  
-  - **Pandas:** Used for comprehensive data analysis and manipulation.  
-  - **Matplotlib:** Employed for creating basic visualizations.  
-  - **Seaborn:** Used to produce more advanced and polished visualizations.  
-- **Jupyter Notebooks:** Provided a seamless environment for running Python scripts, integrating notes, and documenting the analysis.  
-- **Visual Studio Code:** My primary editor for executing Python scripts and managing code efficiently.  
-- **Git & GitHub:** Crucial for version control, project tracking, and sharing my Python scripts and findings for collaboration and transparency.  
+- **Python:** The backbone of this analysis, allowing me to extract and interpret meaningful trends from the dataset. I utilized the following key libraries:  
+  - **Pandas:** Essential for handling, transforming, and analyzing structured data efficiently.  
+  - **Matplotlib:** Used to generate clear and informative visualizations to support insights.  
+- **Jupyter Notebooks:** Offered an interactive and organized environment for executing Python code while seamlessly documenting the process. 
+- **Visual Studio Code:** Served as my main code editor, helping me efficiently manage and execute scripts.
+- **Git & GitHub:** Played a crucial role in version control, tracking changes, and making my work accessible for collaboration and transparency. 
 
 # Data Preparation and Cleanup
 
