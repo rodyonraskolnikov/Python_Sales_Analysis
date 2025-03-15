@@ -35,58 +35,120 @@ I begin by importing the required libraries and loading the dataset, followed by
 
 ```python
 # Importing Libraries
-import ast
+import os
 import pandas as pd
-import seaborn as sns
-from datasets import load_dataset
-import matplotlib.pyplot as plt  
-
-# Loading Data
-dataset = load_dataset('lukebarousse/data_jobs')
-df = dataset['train'].to_pandas()
-
-# Data Cleanup
-df['job_posted_date'] = pd.to_datetime(df['job_posted_date'])
-df['job_skills'] = df['job_skills'].apply(lambda x: ast.literal_eval(x) if pd.notna(x) else x)
 ```
+
+Then I merged my data from each month into one single CSV.
+
+```python
+
+df = pd.read_csv("./Sales_Data/Sales_April_2019.csv")
+
+files = [file for file in os.listdir('./Sales_Data')]
+
+all_months_data = pd.DataFrame()
+
+for file in files: 
+    df = pd.read_csv("./Sales_Data/"+file)
+    all_months_data = pd.concat([all_months_data, df])
+
+all_months_data.to_csv("all_data.csv", index=False)
+
+```
+
+I read my updated dataframe.
+
+```python
+all_data = pd.read_csv("all_data.csv")
+all_data.head()
+```
+
+### Cleaning up the data
+
+In order to make the correct assumptions in my analysis, I had to address many issues whil cleaning up the data I worked with. 
+
+For instance, first of, I dropped rows of NaN:
+
+```python
+nan_df = all_data[all_data.isna().any(axis=1)]
+nan_df.head()
+
+all_data = all_data.dropna(how='all')
+all_data.head()
+```
+The CSV file had columns that were not in the correct data type so I converted them:
+
+```python
+all_data['Quantity Ordered'] = pd.to_numeric(all_data['Quantity Ordered'])
+all_data['Price Each'] = pd.to_numeric(all_data['Price Each'])
+```
+
+I also needed to add some new columns in order to analyze and get to clear assumptions on the data. For instance, creating a ['Month'] column was vital to the analysis: 
+
+```python
+all_data['Month'] = all_data['Order Date'].str[0:2]
+all_data['Month'] = all_data['Month'].astype('int32') 
+all_data.head()
+```
+
+In addition to these, I had to make several other cleaning such as getting rid of unnecessary text, converting the type of columns, adding new columns, etc. If you'd like, you can check them out in detail in the [Jupyter notebook](3_Project/SalesAnalysis.ipynb). I prefer not to list them all here so as not to drown the reader in details.
 
 # The Analysis
 
-## 1. What are the most demanded skills for the top 3 most popular data roles?
+## 1. What was the best month for sales? How much was earned that month?
 
-To identify the most in-demand skills for the top 3 most popular data roles, I filtered the dataset to focus on the most frequently occurring positions and extracted the top 5 skills associated with each of these roles. This analysis highlights the most sought-after job titles and their corresponding key skills, providing insight into the skills to prioritize based on the role of interest.
-
-View my notebook with detailed steps here: [2_Skill_Demand.ipynb](3_Project/2_Skills_Count.ipynb)
-
-### Visualize Data
+Since I already created a ['Month'] column, I included it along with the columns ['Quantity_Ordered'] ['Price_Each']," and ['Sales']." I then aggregated total sales per month to determine the highest revenue month.
 
 ```python
-fig, ax = plt.subplots(len(job_titles), 1)
+all_data['Sales'] = all_data['Quantity Ordered'].astype('int') * all_data['Price Each'].astype('float')
+```
 
+```python
+results = all_data.groupby('Month')[['Quantity Ordered', 'Price Each', 'Sales']].sum()
 
-for i, job_title in enumerate(job_titles):
-    df_plot = df_skills_perc[df_skills_perc['job_title_short'] == job_title].head(5)[::-1]
-    sns.barplot(data=df_plot, x='skill_percent', y='job_skills', ax=ax[i], hue='skill_count', palette='dark:b_r')
+results
+```
 
+Then I used matplotlib library to visualize my findings.
+
+```python
+import matplotlib.pyplot as plt
+
+months = range(1,13)
+
+plt.bar(months, results['Sales'])
+plt.xticks(months)
+plt.ylabel('Sales in USD ($)')
+plt.xlabel('Month number')
 plt.show()
 ```
 
 ### Results
 
-![Visualization of Top Skills for Data Nerds](3_Project/images/skill_demand_all_data_roles.png)
+![alt text](image.png)
 
-*A bar graph showing salaries for the top 3 data roles and their top 5 associated skills.*
+*A visualization of sales trends over the year, showing significant growth in Q4, peaking in December. Notable dips in mid-year highlight potential seasonal patterns or market fluctuations.*
 
 ### Insights
 
-- SQL is the most in-demand skill for both Data Analysts and Data Scientists, appearing in over half of the job postings for each role. For Data Engineers, Python is the top skill, listed in 68% of job postings.  
-- Data Engineers tend to require more specialized technical expertise, such as AWS, Azure, and Spark, whereas Data Analysts and Data Scientists are expected to excel in more general data tools like Excel and Tableau.  
-- Python is a versatile skill that is highly valued across all three roles, with the highest demand among Data Scientists (72%) and Data Engineers (65%).  
+- Steady Growth in Q1 & Q2: Sales increased consistently from January to April, indicating strong early-year performance.
+- Peak in April & May: The highest sales in the first half of the year occurred in April and May, suggesting possible seasonal demand or promotional activities.
+- Mid-Year Dip: Sales declined from June to September, indicating a slowdown—potentially due to seasonal trends, market saturation, or reduced consumer spending.
+- Q4 Surge: A significant spike in sales occurred in October, November, and especially December, suggesting strong holiday-season demand.
+- December as the Best Month: The highest sales volume was recorded in December, possibly driven by holiday shopping, year-end budgets, or promotional campaigns.
+- Opportunity for Mid-Year Boost: Given the dip in sales from June to September, strategic marketing efforts, discounts, or new product launches could help maintain momentum during this period.  
 
-## 2. How are in-demand skills trending for Data Analysts?
+## 2. What city had the highest number of sales?
 
-To analyze skill trends for Data Analysts in 2023, I filtered job postings specific to data analyst roles and grouped the skills by the posting month. This allowed me to identify the top 5 skills for data analysts each month, highlighting their popularity over the course of 2023.
+To determine this, I extracted the city name from the "Purchase Address" column. Then, I grouped the data by city and summed up the total sales for each location. This allowed me to identify the city with the highest number of sales and analyze geographical trends in purchasing behavior.
 
+```python
+results = all_data.groupby('City').sum()
+
+results
+```
+BOOKMARK
 You can view my notebook with detailed steps here: [3_Skills_Trend](3_Skills_Trend.ipynb).
 
 ### Visualize Data
