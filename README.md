@@ -148,8 +148,8 @@ results = all_data.groupby('City').sum()
 
 results
 ```
-BOOKMARK
-You can view my notebook with detailed steps here: [3_Skills_Trend](3_Skills_Trend.ipynb).
+
+You can view my notebook with detailed steps here: [SalesAnalysis.ipynb](/3_Project/SalesAnalysis.ipynb).
 
 ### Visualize Data
 
