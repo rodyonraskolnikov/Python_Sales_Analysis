@@ -198,7 +198,7 @@ all_data['Minute'] = all_data['Order Date'].dt.minute
 all_data.head()
 ```
 
-#### Visualize Data
+### Visualize Data
 
 ```python
 hours = [hour for hour, df in all_data.groupby('Hour')]
@@ -211,14 +211,12 @@ plt.grid()
 plt.show()
 
 ```
-#### Results
+### Results
 
 ![Line chart](order_hour.png)\
-*Line chart displaying the number of orders per hour of day*
+*Line chart displaying the number of orders per hour of day.*
 
-#My recommendation is around 11 AM or 7 PM
-
-#### Insights
+### Insights
 
 - Sales data shows **11 AM and 7 PM as peak buying hours** during the day.  
 - **11 AM peak** likely occurs as people complete their morning routines and have time to make purchases before lunch or mid-day meetings.  
