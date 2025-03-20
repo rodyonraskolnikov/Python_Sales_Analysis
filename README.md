@@ -92,7 +92,7 @@ all_data['Month'] = all_data['Month'].astype('int32')
 all_data.head()
 ```
 
-In addition to these, I had to make several other cleaning such as getting rid of unnecessary text, converting the type of columns, adding new columns, etc. If you'd like, you can check them out in detail in the [Jupyter notebook](3_Project/SalesAnalysis.ipynb). I prefer not to list them all here so as not to drown the reader in details.
+In addition to these, I had to make several other cleaning such as getting rid of unnecessary text, converting the type of columns, adding new columns, etc. If you'd like, you can check them out in detail in the [Jupyter notebook](Sales_Data/SalesAnalysis.ipynb). I prefer not to list them all here so as not to drown the reader in details.
 
 # The Analysis
 
@@ -126,7 +126,7 @@ plt.show()
 
 ### Results
 
-![alt text](image.png)
+![alt text](image.png))
 
 *A visualization of sales trends over the year, showing significant growth in Q4, peaking in December. Notable dips in mid-year highlight potential seasonal patterns or market fluctuations.*
 
@@ -144,62 +144,87 @@ plt.show()
 To determine this, I extracted the city name from the "Purchase Address" column. Then, I grouped the data by city and summed up the total sales for each location. This allowed me to identify the city with the highest number of sales and analyze geographical trends in purchasing behavior.
 
 ```python
-results = all_data.groupby('City').sum()
-
-results
+results = all_data.groupby('City')[['Quantity Ordered', 'Price Each']].sum()
 ```
 
-You can view my notebook with detailed steps here: [SalesAnalysis.ipynb](/3_Project/SalesAnalysis.ipynb).
+You can view my notebook with detailed steps here: [SalesAnalysis.ipynb](SalesAnalysis\SalesAnalysis.ipynb).
 
 ### Visualize Data
 
 ```python
-from matplotlib.ticker import PercentFormatter
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 
-df_plot = df_DA_US_percent.iloc[:, :5]
-sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+sales_by_city = all_data.groupby('City')['Sales'].sum()
 
-plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+keys = sales_by_city.index
 
+plt.bar(keys, sales_by_city.values, align='center')
+plt.ylabel('Sales in USD ($)')
+plt.xlabel('City')
+plt.xticks(rotation='vertical', size=8)
+
+# Define a custom formatter to display ticks as 1m, 2m, etc.
+def millions(x, pos):
+    return f'{x/1_000_000:.0f}m'
+
+plt.gca().yaxis.set_major_formatter(mtick.FuncFormatter(millions))
 plt.show()
 ````
 ### Results
 
-![Trending Top Skills for Data Analysts in the US](3_Project/images/skill_trend_DA.png)  
-*Bar chart showcasing the top trending skills for data analysts in the US during 2023.*
+![alt text](number_of_sales_per_city.png)
+*Bar chart showcasing number of sales per city in the US.*
 
 ### Insights:
-- SQL consistently remained the most in-demand skill throughout the year, though its demand gradually declined over time.  
-- Excel saw a notable rise in demand starting in September, ultimately surpassing both Python and Tableau by year-end.  
-- Python and Tableau maintained relatively stable demand throughout the year, with minor fluctuations, continuing to be key skills for data analysts. Power BI, while less in demand compared to the others, displayed a slight upward trend toward the end of the year.
+- Urban centers typically have a significantly higher population concentration. This density naturally leads to a greater volume of potential buyers, which is reflected in the increased sales figures. In high-density areas, the sheer number of consumers drives up transaction frequency, contributing to robust overall sales volumes.
 
-## 3. How well do jobs and skills pay for Data Analysts?
+- Cities like San Francisco, Los Angeles, and New York City are not only densely populated but also feature a higher concentration of affluent consumers with greater disposable incomes. This economic vitality means that individuals in these regions are more likely to engage in discretionary spending, thereby boosting sales further. In contrast, smaller markets may experience less economic activity and lower average income levels, which can dampen consumer spending.
 
-### Salary Analysis for Data Nerds
+## 3. What time should we display advertisements to maximize likelihood of customer's buying product?
 
-Check out my notebook with detailed steps here: [4_Salary_Analysis](4_Salary_Analysis.ipynb).
+### Type conversion
+
+Firstly, I had to change the type of the values on the 'Order Date' column into 'datetime' format because the task in essence requires me to find the time.
+
+```python 
+all_data['Order Date'] = pd.to_datetime(all_data['Order Date'])
+```
+And then, the logical thing was to handpick the Hour and the Minute, so I created separate columns for them.
+
+```python 
+all_data['Hour'] = all_data['Order Date'].dt.hour
+all_data['Minute'] = all_data['Order Date'].dt.minute
+all_data.head()
+```
 
 #### Visualize Data
 
 ```python
-sns.boxplot(data=df_US_top6, x='salary_year_avg', y='job_title_short', order=job_order)
+hours = [hour for hour, df in all_data.groupby('Hour')]
 
-ticks_x = plt.FuncFormatter(lambda y, pos: f'${int(y/1000)}K')
-plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.plot(hours, all_data.groupby(['Hour']).count())
+plt.xticks(hours)
+plt.xlabel('Hour')
+plt.ylabel('Number of Orders')
+plt.grid()
 plt.show()
+
 ```
 #### Results
 
-![Salary Distributions of Data Jobs in the US](3_Project/images/Salary_Distributions_of_Data_Jobs_in_the_US.png)  
-*A box plot illustrating the salary distributions for the top 6 data-related job titles.*
+![Line chart](order_hour.png)\
+*Line chart displaying the number of orders per hour of day*
+
+#My recommendation is around 11 AM or 7 PM
 
 #### Insights
 
-- There is a notable variation in salary ranges across different job titles. Senior Data Scientist roles stand out with the highest earning potential, reaching up to $600K, highlighting the industry's high demand for advanced data expertise and experience.
-
-- Both Senior Data Engineer and Senior Data Scientist positions exhibit a significant number of high-end outliers, indicating that exceptional skills or unique circumstances can result in substantial compensation. In comparison, Data Analyst roles show more consistent salaries with fewer outliers.
-
-- Median salaries tend to rise with the level of seniority and specialization. Senior roles, such as Senior Data Scientist and Senior Data Engineer, not only command higher median salaries but also exhibit greater variability in earnings, reflecting the increased complexity and responsibility associated with these positions.
+- Sales data shows **11 AM and 7 PM as peak buying hours** during the day.  
+- **11 AM peak** likely occurs as people complete their morning routines and have time to make purchases before lunch or mid-day meetings.  
+- **7 PM peak** aligns with the post-work relaxation period when consumers are home and more likely to browse and shop online.  
+- **Digital ads** (Google, Facebook, Instagram, YouTube) should be scheduled **between 10:30 AM – 12 PM and 6:30 PM – 8 PM** to target high-conversion windows.  
+- **Email campaigns and push notifications** should be sent **before peak hours (10 AM and 6 PM)** to drive engagement.  
 
 ### Highest Paid & Most Demanded Skills for Data Analysts
 
