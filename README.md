@@ -369,11 +369,19 @@ plt.show()
 
 # What I Learned
 
-This project allowed me to deepen my understanding of the data analyst job market and improve my technical skills in Python. Here are a few key takeaways:
+This project deepened my understanding of sales trends throughout a typical year in the US, highlighting seasonal patterns, consumer behavior, and product performance. Here are a few key takeaways:
 
-- **Advanced Python Proficiency**: Leveraging libraries such as Pandas for data manipulation, Seaborn and Matplotlib for data visualization, and others enabled me to perform complex analyses more efficiently.  
-- **Importance of Data Cleaning**: I learned that thorough data cleaning and preparation are vital to ensure accurate and reliable insights during analysis.  
-- **Strategic Skill Assessment**: This project underscored the importance of aligning skills with market demand. Understanding the connection between skill demand, salary, and job availability is critical for informed career planning in tech.
+- **December Dominates Sales, January Slows Down**  
+  The holiday season drives a clear sales peak in December, making it the most profitable month. In contrast, January sees the lowest sales—likely due to budget resets and post-holiday recovery.
+
+- **High-End Brands Like Apple Defy Price Trends**  
+  Despite the usual pattern of lower prices leading to higher sales volumes, premium products like iPhones and MacBook Pros consistently sell well. This shows that brand reputation and perceived quality can outweigh price sensitivity.
+
+- **Sales Spike at 11 AM and 7 PM**  
+  The most active shopping hours are around 11 AM and 7 PM. The morning peak likely comes after people finish their routines, while the evening surge aligns with relaxation time after work, often spent browsing online.
+
+- **Utility Products Drive Consistent Volume**
+
 
 
 
