@@ -224,107 +224,148 @@ plt.show()
 - **Digital ads** (Google, Facebook, Instagram, YouTube) should be scheduled **between 10:30 AM – 12 PM and 6:30 PM – 8 PM** to target high-conversion windows.  
 - **Email campaigns and push notifications** should be sent **before peak hours (10 AM and 6 PM)** to drive engagement.  
 
-### Highest Paid & Most Demanded Skills for Data Analysts
+## Question 4: What products are most often sold together?
 
-Next, I refined my analysis to focus specifically on Data Analyst roles. I examined the highest-paying skills and the most in-demand skills, presenting the findings using two bar charts.
+### Detecting Frequently Bought Together Items Using GroupBy and Transform
+
+```python
+df = all_data[all_data['Order ID'].duplicated(keep=False)]
+
+df['Grouped'] = df.groupby('Order ID')['Product'].transform(lambda x: ', '.join(x))
+
+df.head()
+
+df = df[['Order ID', 'Grouped']].drop_duplicates()
+
+df.head(100)
+```
+
+I then analyzed grouped transactions to find the most common product pairs by generating 2-item combinations with `itertools` and counting their frequency using `Counter`, revealing frequently bought together items for potential bundling insights.
+
+```python
+from itertools import combinations
+from collections import Counter
+
+count = Counter()
+
+for row in df['Grouped']:
+    row_list = row.split(',')
+    count.update(Counter(combinations(row_list, 2)))
+
+for key, value in count.most_common(10):
+    print(key, value)
+```
+
+#### Insights:
+
+- **Phone and cable purchases are tightly linked**: Customers frequently buy charging cables with phones, indicating bundling opportunities or a need to highlight compatible accessories at checkout.
+
+- **Wired headphones remain popular**: Despite the rise of wireless options, many customers still pair phones with wired headphones, suggesting continued demand for budget audio options.
+
+- **Brand-specific accessory preferences are clear**: iPhone buyers lean toward Apple AirPods, while Google Phone buyers prefer Bose SoundSport, showing a tendency toward brand-aligned premium accessories.
+
+- **Vareebadd Phone users heavily purchase accessories**: Although not as high in volume, Vareebadd consistently appears with essential add-ons, indicating a loyal base or gaps in included items.
+
+- **Accessories are frequently bought together**: Items like USB-C cables and wired headphones are paired independently of phones, suggesting accessory-only purchase behavior worth targeting.
+
+## Question 5: What product sold the most? Why do you think it sold the most?
+
+(See all of the steps for answering Question 5 in detail in [SalesAnalysis.ipynb](SalesAnalysis.ipynb).)
+
+### Summing Product Quantities and Selecting Top 10
+
+I first  grouped the data by product and summed the total quantities ordered to calculate overall sales volume per item. Using .head(10), I then extracted the top 10 best-selling products to quickly identify which items had the highest purchase frequency.
+
+```python 
+# Group by product and sum the quantities
+product_sales = all_data.groupby('Product')['Quantity Ordered'].sum()
+
+# Sort by most sold products
+print(product_sales.sort_values(ascending=False).head(10))
+```
+
+Then I simply visualized this:
 
 #### Visualize Data
 
 ```python
+product_sales = all_data.groupby('Product')['Quantity Ordered'].sum()
 
-fig, ax = plt.subplots(2, 1)  
+# Sort products by sales
+product_sales = product_sales.sort_values(ascending=False)
 
-# Top 10 Highest Paid Skills for Data Analysts
-sns.barplot(data=df_DA_top_pay, x='median', y=df_DA_top_pay.index, hue='median', ax=ax[0], palette='dark:b_r')
+# Plot the data
+plt.figure(figsize=(12, 6))
+plt.bar(product_sales.index, product_sales.values)
 
-# Top 10 Most In-Demand Skills for Data Analystsr')
-sns.barplot(data=df_DA_skills, x='median', y=df_DA_skills.index, hue='median', ax=ax[1], palette='light:b')
+# Add labels and title
+plt.xlabel('Products')
+plt.ylabel('Quantity Ordered')
+plt.title('Top Selling Products')
+plt.xticks(rotation=45, ha='right')
 
+# Show the plot
 plt.show()
 
 ```
 
-#### Results
-Here’s an overview of the highest-paying and most in-demand skills for Data Analysts in the United States:
+![alt text](top_ten_products.png)
+*Line chart displaying top 10 products in the dataset.*
 
-![The Highest Paid & Most In-Demand Skills for Data Analysts in the US](3_Project/images/Highest_Paid_and_Most_In_Demand_Skills_for_Data_Analysts_in_the_US.png)
+Upon which, I embarked on the "why" of the question. One of the things I knew I had to do was to find the average prices of these products since buying behavior cannot be explained without them. My hypothesis was that the higher price the product had, the less it sold.
 
-*Two distinct bar charts illustrating the highest-paying skills and the most in-demand skills for Data Analysts in the United States.*
+### Finding the average price
 
-#### Insights:
+```python
+all_data['Price Each'] = pd.to_numeric(all_data['Price Each'], errors='coerce')
 
-- The top chart reveals that specialized technical skills such as `dplyr`, `Bitbucket`, and `Gitlab` are linked to higher salaries, with some reaching up to $200K. This indicates that advanced technical expertise significantly boosts earning potential.
+prices = all_data.groupby('Product')['Price Each'].mean()
 
-- The bottom chart shows that foundational skills like `Excel`, `PowerPoint`, and `SQL` are the most sought-after, even though they may not lead to the highest salaries. This underscores the essential role these core skills play in securing data analysis positions.
+print(prices)
+```
 
-- There is a distinct difference between the skills associated with the highest salaries and those most in demand. To maximize career opportunities, data analysts should aim to build a well-rounded skill set that incorporates both high-paying specialized skills and widely demanded foundational skills.
-
-## 4. What are the most optimal skills to learn for Data Analysts?
-
-To determine the most optimal skills to learn (those that are both highly paid and in high demand), I calculated the percentage of skill demand and the median salary for these skills. This approach makes it easier to identify the top skills to focus on.
-
-You can view my notebook with detailed steps here: [5_Optimal_Skills](5_Optimal_Skills.ipynb).
+Then I plotted my findings in a single chart, creating an overlay of the average prices on top of the quantities ordered:
 
 #### Visualize Data
 
 ```python
-from adjustText import adjust_text
-import matplotlib.pyplot as plt
+# Grouping data
+product_sales = all_data.groupby('Product')['Quantity Ordered'].sum().sort_values(ascending=False)
+prices = all_data.groupby('Product')['Price Each'].mean()
 
-plt.scatter(df_DA_skills_high_demand['skill_percent'], df_DA_skills_high_demand['median_salary'])
+# Create a new figure with appropriate size
+fig, ax1 = plt.subplots(figsize=(12, 6))
+
+# Plot the bar chart on ax1 for Quantity Ordered
+ax1.bar(product_sales.index, product_sales.values, label='Quantity Ordered')
+ax1.set_xlabel('Product')
+ax1.set_ylabel('Quantity Ordered', color='black')
+ax1.tick_params(axis='y', labelcolor='black')
+ax1.set_xticklabels(product_sales.index, rotation=45, ha='right')
+
+# Create a twin axis sharing the same x-axis for the average price line chart
+ax2 = ax1.twinx()
+# Ensure the prices are in the same order as product_sales
+ax2.plot(product_sales.index, prices.loc[product_sales.index], color='red', marker='o', label='Average Price')
+ax2.set_ylabel('Average Price ($)', color='red')
+ax2.tick_params(axis='y', labelcolor='red')
+
+# Add a title and adjust layout
+plt.title('Top Selling Products with Average Prices')
+fig.tight_layout()
+
 plt.show()
-
 ```
 
-#### Results
-
-![Most Optimal Skills for Data Analysts in the US](3_Project/images/Most_Optimal_Skills_for_Data_Analysts_in_the_US.png)    
-*A scatter plot showcasing the most optimal skills for Data Analysts in the US, highlighting those that are both high-paying and in high demand.*
-
-#### Insights:
-
-- The skill `Oracle` stands out with the highest median salary of nearly $97K, despite being less frequently mentioned in job postings, indicating the high value placed on specialized database expertise in the data analyst field.
-
-- Widely required skills like `Excel` and `SQL` are prominent in job postings but tend to have lower median salaries compared to specialized skills such as `Python` and `Tableau`, which offer higher salaries and are moderately common in job listings.
-
-- Skills like `Python`, `Tableau`, and `SQL Server` are positioned near the top of the salary range while also being fairly prevalent in job postings, suggesting that proficiency in these tools can lead to strong career opportunities in data analytics.    
-
-### Visualizing Different Techonologies
-
-Let’s enhance the visualization by including different technologies in the graph. We'll assign color labels based on the type of technology (e.g., {Programming: Python}).
-
-#### Visualize Data
-
-```python
-from matplotlib.ticker import PercentFormatter
-
-# Create a scatter plot
-scatter = sns.scatterplot(
-    data=df_DA_skills_tech_high_demand,
-    x='skill_percent',
-    y='median_salary',
-    hue='technology',  # Color by technology
-    palette='bright',  # Use a bright palette for distinct colors
-    legend='full'  # Ensure the legend is shown
-)
-plt.show()
-
-```
-
-#### Results
-
-![Most Optimal Skills for Data Analysts in the US with Technology-Based Coloring](3_Project/images/Most_Optimal_Skills_for_Data_Analysts_in_the_US_with_Coloring_by_Technology.png)  
-*A scatter plot showcasing the most optimal skills (those that are high-paying and in high demand) for data analysts in the US, featuring color-coded labels to represent various technologies.*
-
-#### Insights:
-
-- The scatter plot reveals that programming skills (blue) tend to cluster at higher salary levels compared to other categories, highlighting the significant salary benefits associated with programming expertise in the data analytics field.
-
-- Database skills (orange), such as Oracle and SQL Server, are linked to some of the highest salaries among data analyst tools, underscoring the high demand and value of data management and manipulation expertise in the industry.
-
-- Analyst tools (green), like Tableau and Power BI, are widely mentioned in job postings and offer competitive salaries. These tools are essential for data roles, providing strong earning potential and versatility across various data tasks.
+![alt text](top_selling_products_w_average_prices.png)   
+*Bar chart of top-selling products by quantity, overlayed with a line chart of their average prices.*
 
 
+## Insights
+
+- **Observing an inverse relationship between price and quantity sold**: There is a clear negative correlation between a product's price and its sales volume. Lower-priced items like batteries and charging cables dominate in quantity sold, while higher-priced items, such as laptops and large electronics, sell less frequently.
+
+- **MacBook Pro defies the price-to-demand trend**: Despite being the most expensive item on the chart, the MacBook Pro outperforms several cheaper alternatives in sales volume—including the ThinkPad, which costs roughly two-thirds as much. This suggests strong consumer trust and brand preference for Apple, likely driven by its reputation for reliability and performance.
 
 # What I Learned
 
