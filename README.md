@@ -174,6 +174,7 @@ plt.show()
 ### Results
 
 ![alt text](number_of_sales_per_city.png)
+
 *Bar chart showcasing number of sales per city in the US.*
 
 ### Insights:
