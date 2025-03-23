@@ -1,6 +1,6 @@
 # Overview
 
-In this project, I analyzed a year's worth of sales data by merging monthly sales reports into a comprehensive dataset. My analysis involved rigorous data cleaning—including handling missing values and incorrect entries—and ensuring the accuracy of data types. After cleaning and preparing the data, I investigated key business questions such as identifying the best month for sales, determining which city generated the most sales, analyzing optimal advertisement timing, understanding product bundling patterns, and highlighting the most popular products. This provided valuable insights to inform business decisions on marketing, product strategy, and sales optimization.
+Welcome to my Sales Analysis project. In this project, I analyzed a year's worth of sales data by merging monthly sales reports into a comprehensive dataset. My analysis involved rigorous data cleaning—including handling missing values and incorrect entries—and ensuring the accuracy of data types. After cleaning and preparing the data, I investigated key business questions such as identifying the best month for sales, determining which city generated the most sales, analyzing optimal advertisement timing, understanding product bundling patterns, and highlighting the most popular products. This provided valuable insights to inform business decisions on marketing, product strategy, and sales optimization.
  
 The dataset and the foundational concepts for this analysis were provided by [Keith Galli](https://www.youtube.com/watch?v=eMOA1pPVUc4&t=2s&ab_channel=KeithGalli) as part of his comprehensive data analytics tutorials, making this project both educational and practical.
 
@@ -22,7 +22,7 @@ While cleaning up the data and answering the questions above, I utilized several
   - **Pandas:** Essential for handling, transforming, and analyzing structured data efficiently.  
   - **Matplotlib:** Used to generate clear and informative visualizations to support insights.  
 - **Jupyter Notebooks:** Offered an interactive and organized environment for executing Python code while seamlessly documenting the process. 
-- **Visual Studio Code:** Served as my main code editor, helping me efficiently manage and execute scripts.
+- **Visual Studio Code:** Served as my code editor, helping me efficiently manage and execute scripts.
 - **Git & GitHub:** Played a crucial role in version control, tracking changes, and making my work accessible for collaboration and transparency. 
 
 # Data Preparation and Cleanup
@@ -31,7 +31,7 @@ This section details the steps undertaken to prepare the data for analysis, focu
 
 ## Import & Clean Up Data
 
-I begin by importing the required libraries and loading the dataset, followed by performing initial data cleaning to ensure high data quality.
+I began by importing the required libraries and loading the dataset, followed by performing initial data cleaning to ensure high data quality.
 
 ```python
 # Importing Libraries
@@ -57,14 +57,14 @@ all_months_data.to_csv("all_data.csv", index=False)
 
 ```
 
-I read my updated dataframe.
+I then read my updated dataframe.
 
 ```python
 all_data = pd.read_csv("all_data.csv")
 all_data.head()
 ```
 
-### Cleaning up the data
+## Cleaning up the data
 
 In order to make the correct assumptions in my analysis, I had to address many issues whil cleaning up the data I worked with. 
 
@@ -92,7 +92,7 @@ all_data['Month'] = all_data['Month'].astype('int32')
 all_data.head()
 ```
 
-In addition to these, I had to make several other cleaning such as getting rid of unnecessary text, converting the type of columns, adding new columns, etc. If you'd like, you can check them out in detail in the [Jupyter notebook](Sales_Data/SalesAnalysis.ipynb). I prefer not to list them all here so as not to drown the reader in details.
+In addition to these, I had to make several other cleaning such as getting rid of unnecessary text, converting the type of columns, adding new columns, etc. If you'd like, you can check them out in detail in the [Jupyter notebook](SalesAnalysis/SalesAnalysis.ipynb). I prefer not to list them all here so as not to drown the reader in details.
 
 # The Analysis
 
@@ -381,31 +381,23 @@ This project deepened my understanding of sales trends throughout a typical year
   The most active shopping hours are around 11 AM and 7 PM. The morning peak likely comes after people finish their routines, while the evening surge aligns with relaxation time after work, often spent browsing online.
 
 - **Utility Products Drive Consistent Volume**
-
-
-
-
-# Insights
-
-This project offered several important insights into the data analyst job market:
-
-- **Correlation Between Skill Demand and Salary**: Skills that are in high demand, such as Python and Oracle, often command higher salaries, showcasing a clear relationship between market demand and compensation.  
-- **Evolving Market Trends**: Skill demand in the data analytics field evolves, emphasizing the need to stay updated with industry trends for sustained career growth.  
-- **Economic Value of Skill Development**: Identifying skills that are both in-demand and well-compensated can help data analysts prioritize their learning efforts to maximize career and financial returns.
+Everyday items like phone accessories, batteries, and cables maintain strong sales across months. Their frequent use and relatively low cost make them consistent performers, even outside major sales periods.
 
 
 
 # Challenges I Faced  
 
-This project came with its share of challenges, offering valuable learning experiences:  
+The project was not without its challenges. Those challenges pushed my limits with regards to my Python/Pandas know-how:  
 
-- **Data Inconsistencies**: Managing missing or inconsistent data entries required meticulous data-cleaning techniques to maintain the integrity and reliability of the analysis.  
-- **Complex Data Visualization**: Creating clear and effective visualizations for complex datasets was challenging but essential for presenting insights in a compelling and understandable way.  
-- **Balancing Breadth and Depth**: Striking the right balance between diving deeply into specific analyses and maintaining a broad overview of the data landscape was a constant challenge to ensure thorough coverage without losing focus.  
+- **Extensive Data Cleaning Required**: The original dataset contained many inconsistencies such as missing values (NaNs), incorrect data formats, and typos in column headers. I had to clean each monthly file, convert data types (e.g., strings to datetime or numeric), and drop or impute invalid rows before analysis. Combining all 12 monthly CSV files into one clean dataset was a crucial early step.
+
+- **Parsing and Extracting Useful Information from Text Columns**: Several important features like city names, product categories, and timestamps were embedded within longer text strings. For example, extracting city names from addresses or calculating hour-wise sales from timestamps required detailed parsing and feature engineering.
+
+- **Advanced Plotting with Matplotlib**: Plotting using Matplotlib sometimes required more advanced techniques, especially when dealing with grouped data or time-based trends, which contributed to my learning.
+
+# Conclusion
+
+This sales data analysis project has been a rewarding experience, offering valuable insights into consumer behavior, sales trends, and the power of data-driven decision-making. Working through the challenges of cleaning, merging, and visualizing the data has not only strengthened my technical skills but also highlighted the real-world impact of data analytics in a business context. As markets continue to shift, regularly analyzing sales data will remain essential for staying ahead of the curve. This project lays a strong groundwork for future explorations into business intelligence and reinforces the value of curiosity, problem-solving, and continuous learning. And last but not least, a big shoutout to the brilliant [Keith Galli](https://www.youtube.com/@KeithGalli)—this project wouldn't have come to life without his guidance and inspiration.
 
 
-
-# Conclusion  
-
-This analysis of the data analyst job market has been highly insightful, shedding light on the key skills and trends that define this dynamic field. The findings not only deepen my understanding but also offer actionable guidance for anyone aiming to advance in data analytics. As the industry continues to evolve, ongoing analysis will be crucial to staying competitive. This project serves as a strong foundation for future research and emphasizes the importance of continuous learning and adaptability in the data analytics profession. And last but not the least, a massive thanks to the amazing [Luke Barousse](https://www.lukebarousse.com/). Without him, this project would never exist.
 
