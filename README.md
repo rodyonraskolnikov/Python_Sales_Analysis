@@ -126,7 +126,7 @@ plt.show()
 
 ### Results
 
-![alt text](image.png))
+![alt text](number_of_sales_per_month.png)
 
 *A visualization of sales trends over the year, showing significant growth in Q4, peaking in December. Notable dips in mid-year highlight potential seasonal patterns or market fluctuations.*
 
@@ -147,7 +147,7 @@ To determine this, I extracted the city name from the "Purchase Address" column.
 results = all_data.groupby('City')[['Quantity Ordered', 'Price Each']].sum()
 ```
 
-You can view my notebook with detailed steps here: [SalesAnalysis.ipynb](SalesAnalysis\SalesAnalysis.ipynb).
+You can view my notebook with detailed steps here: [SalesAnalysis.ipynb](SalesAnalysis/SalesAnalysis.ipynb).
 
 ### Visualize Data
 
@@ -226,7 +226,7 @@ plt.show()
 
 ## Question 4: What products are most often sold together?
 
-### Detecting Frequently Bought Together Items Using GroupBy and Transform
+Firstly, I detected Frequently Bought Together Items Using GroupBy and Transform methods.
 
 ```python
 df = all_data[all_data['Order ID'].duplicated(keep=False)]
@@ -270,7 +270,7 @@ for key, value in count.most_common(10):
 
 ## Question 5: What product sold the most? Why do you think it sold the most?
 
-(See all of the steps for answering Question 5 in detail in [SalesAnalysis.ipynb](SalesAnalysis.ipynb).)
+(See all of the steps for answering Question 5 in detail in [SalesAnalysis.ipynb](SalesAnalysis/SalesAnalysis.ipynb).)
 
 ### Summing Product Quantities and Selecting Top 10
 
@@ -286,7 +286,7 @@ print(product_sales.sort_values(ascending=False).head(10))
 
 Then I simply visualized this:
 
-#### Visualize Data
+### Visualize Data
 
 ```python
 product_sales = all_data.groupby('Product')['Quantity Ordered'].sum()
@@ -326,7 +326,7 @@ print(prices)
 
 Then I plotted my findings in a single chart, creating an overlay of the average prices on top of the quantities ordered:
 
-#### Visualize Data
+### Visualize Data
 
 ```python
 # Grouping data
