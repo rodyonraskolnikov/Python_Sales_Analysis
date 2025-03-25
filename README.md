@@ -144,6 +144,20 @@ plt.show()
 To determine this, I extracted the city name from the "Purchase Address" column. Then, I grouped the data by city and summed up the total sales for each location. This allowed me to identify the city with the highest number of sales and analyze geographical trends in purchasing behavior.
 
 ```python
+# splitting the cities from purchase addresses 
+def get_city(address):
+    return address.split(',')[1]
+
+def get_state(address):
+    return address.split(',')[2].split(' ')[1]
+
+all_data['City'] = all_data['Purchase Address'].apply(lambda x: f"{get_city(x)} ({get_state(x)})")
+
+all_data.head()
+```
+
+```python
+#grouping the data by city
 results = all_data.groupby('City')[['Quantity Ordered', 'Price Each']].sum()
 ```
 
