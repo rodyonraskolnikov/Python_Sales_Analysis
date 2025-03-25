@@ -96,7 +96,7 @@ In addition to these, I had to make several other cleaning such as getting rid o
 
 # The Analysis
 
-## 1. What was the best month for sales? How much was earned that month?
+## Question #1: What was the best month for sales? How much was earned that month?
 
 Since I already created a ['Month'] column, I included it along with the columns ['Quantity_Ordered'] ['Price_Each']," and ['Sales']." I then aggregated total sales per month to determine the highest revenue month.
 
@@ -139,7 +139,7 @@ plt.show()
 - December as the Best Month: The highest sales volume was recorded in December, possibly driven by holiday shopping, year-end budgets, or promotional campaigns.
 - Opportunity for Mid-Year Boost: Given the dip in sales from June to September, strategic marketing efforts, discounts, or new product launches could help maintain momentum during this period.  
 
-## 2. What city had the highest number of sales?
+## Question #2: What city had the highest number of sales?
 
 To determine this, I extracted the city name from the "Purchase Address" column. Then, I grouped the data by city and summed up the total sales for each location. This allowed me to identify the city with the highest number of sales and analyze geographical trends in purchasing behavior.
 
@@ -182,7 +182,7 @@ plt.show()
 
 - Cities like San Francisco, Los Angeles, and New York City are not only densely populated but also feature a higher concentration of affluent consumers with greater disposable incomes. This economic vitality means that individuals in these regions are more likely to engage in discretionary spending, thereby boosting sales further. In contrast, smaller markets may experience less economic activity and lower average income levels, which can dampen consumer spending.
 
-## 3. What time should we display advertisements to maximize likelihood of customer's buying product?
+## Question #3: What time should we display advertisements to maximize likelihood of customer's buying product?
 
 ### Type conversion
 
@@ -269,7 +269,7 @@ for key, value in count.most_common(10):
 
 - **Accessories are frequently bought together**: Items like USB-C cables and wired headphones are paired independently of phones, suggesting accessory-only purchase behavior worth targeting.
 
-## Question 5: What product sold the most? Why do you think it sold the most?
+## Question #5: What product sold the most? Why do you think it sold the most?
 
 (See all of the steps for answering Question 5 in detail in [SalesAnalysis.ipynb](SalesAnalysis/SalesAnalysis.ipynb).)
 
