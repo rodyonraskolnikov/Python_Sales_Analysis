@@ -287,16 +287,16 @@ for key, value in count.most_common(10):
 
 (See all of the steps for answering Question 5 in detail in [SalesAnalysis.ipynb](SalesAnalysis/SalesAnalysis.ipynb).)
 
-### Summing Product Quantities and Selecting Top 10
+### Summing Product Quantities and Selecting Them
 
-I first  grouped the data by product and summed the total quantities ordered to calculate overall sales volume per item. Using .head(10), I then extracted the top 10 best-selling products to quickly identify which items had the highest purchase frequency.
+I first  grouped the data by product and summed the total quantities ordered to calculate overall sales volume per item. I then extracted the products in the dataset to quickly identify which items had the highest purchase frequency.
 
 ```python 
 # Group by product and sum the quantities
 product_sales = all_data.groupby('Product')['Quantity Ordered'].sum()
 
 # Sort by most sold products
-print(product_sales.sort_values(ascending=False).head(10))
+print(product_sales.sort_values(ascending=False))
 ```
 
 Then I simply visualized this:
@@ -324,8 +324,8 @@ plt.show()
 
 ```
 
-![alt text](top_ten_products.png)
-*Line chart displaying top 10 products in the dataset.*
+![alt text](top_selling_products.png)
+*Line chart displaying top selling products in the dataset.*
 
 Upon which, I embarked on the "why" of the question. One of the things I knew I had to do was to find the average prices of these products since buying behavior cannot be explained without them. My hypothesis was that the higher price the product had, the less it sold.
 
