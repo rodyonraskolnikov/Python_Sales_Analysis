@@ -382,6 +382,9 @@ plt.show()
 
 - **MacBook Pro defies the price-to-demand trend**: Despite being the most expensive item on the chart, the MacBook Pro outperforms several cheaper alternatives in sales volume—including the ThinkPad, which costs roughly two-thirds as much. This suggests strong consumer trust and brand preference for Apple, likely driven by its reputation for reliability and performance.
 
+- **Strong iPhone Sales Underscore Apple's Brand Power**:
+Much like MacBook Pro, iPhone stands out by defying the typical price-to-sales trend. As the third most expensive item in the dataset, one might expect its sales volume to lag behind more affordable products. However, iPhones consistently rank among the top-selling items. This underscores the power of Apple’s brand recognition and customer loyalty—proving that consumers are willing to pay a premium for trusted, high-status devices.
+
 # What I Learned
 
 This project deepened my understanding of sales trends throughout a typical year in the US, highlighting seasonal patterns, consumer behavior, and product performance. Here are a few key takeaways:
