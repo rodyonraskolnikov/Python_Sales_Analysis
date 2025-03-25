@@ -126,7 +126,7 @@ plt.show()
 
 ### Results
 
-![alt text](number_of_sales_per_month.png)
+![alt text](images/number_of_sales_per_month.png)
 
 *A visualization of sales trends over the year, showing significant growth in Q4, peaking in December. Notable dips in mid-year highlight potential seasonal patterns or market fluctuations.*
 
@@ -187,7 +187,7 @@ plt.show()
 ````
 ### Results
 
-![alt text](number_of_sales_per_city.png)
+![alt text](images/number_of_sales_per_city.png)
 
 *Bar chart showcasing number of sales per city in the US.*
 
@@ -228,7 +228,7 @@ plt.show()
 ```
 ### Results
 
-![Line chart](order_hour.png)\
+![Line chart](images/order_hour.png)\
 *Line chart displaying the number of orders per hour of day.*
 
 ### Insights
@@ -324,7 +324,7 @@ plt.show()
 
 ```
 
-![alt text](top_selling_products.png)
+![alt text](images/top_selling_products.png)
 *Line chart displaying top selling products in the dataset.*
 
 Upon which, I embarked on the "why" of the question. One of the things I knew I had to do was to find the average prices of these products since buying behavior cannot be explained without them. My hypothesis was that the higher price the product had, the less it sold.
@@ -372,7 +372,7 @@ fig.tight_layout()
 plt.show()
 ```
 
-![alt text](top_selling_products_w_average_prices.png)   
+![alt text](images/top_selling_products_w_average_prices.png)   
 *Bar chart of top-selling products by quantity, overlayed with a line chart of their average prices.*
 
 
